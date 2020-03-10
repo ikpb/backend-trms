@@ -26,7 +26,7 @@ public class ReimbursementForm {
 	
 	private int cost;
 	
-	private int estimateReimburse;
+	private Double estimateReimburse;
 	
 	private String gradeFormat;
 	
@@ -99,11 +99,11 @@ public class ReimbursementForm {
 		this.cost = cost;
 	}
 
-	public int getEstimateReimburse() {
+	public double getEstimateReimburse() {
 		return estimateReimburse;
 	}
 
-	public void setEstimateReimburse(int estimateReimburse) {
+	public void setEstimateReimburse(double estimateReimburse) {
 		this.estimateReimburse = estimateReimburse;
 	}
 
@@ -172,7 +172,6 @@ public class ReimbursementForm {
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + cost;
 		result = prime * result + ((dateOfEvent == null) ? 0 : dateOfEvent.hashCode());
-		result = prime * result + estimateReimburse;
 		result = prime * result + ((gradeFormat == null) ? 0 : gradeFormat.hashCode());
 		result = prime * result + id;
 		result = prime * result + (isUrgent ? 1231 : 1237);
@@ -266,7 +265,7 @@ public class ReimbursementForm {
 	}
 
 	public ReimbursementForm(int id, String userid, Timestamp dateOfEvent, String address, String city,String state,
-			int cost, String gradeFormat, String typeOfEvent, String workJustification, Date submitdate, String description, Date endDate) {
+			int cost, String gradeFormat, String typeOfEvent, String workJustification, String description, Date endDate, Date submitdate, Double esti) {
 		super();
 		this.id = id;
 		this.userid = userid;
@@ -280,6 +279,7 @@ public class ReimbursementForm {
 		this.workJustification = workJustification;
 		this.isUrgent = false;
 		this.submissionDate = submitdate;
+		this.estimateReimburse = esti;
 		this.description = description;
 		this.endDate = endDate;
 	}

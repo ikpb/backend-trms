@@ -111,6 +111,17 @@ public class User {
 		this.password = password;
 		this.userType = userType;
 	}
+	public User(int id, String firstName, String lastName, String email, int reportsTo, int title, int reimbursement, UserType userType) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.reportsTo=reportsTo;
+		this.title=title;
+		this.remainingAmount=reimbursement;
+		this.userType = userType;
+	}
 
 	public User() {
 		super();

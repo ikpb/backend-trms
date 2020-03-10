@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.GsonBuilder;
 import com.ikpb.domain.ReimbursementForm;
 import com.ikpb.domain.User;
+import com.ikpb.domain.User.UserType;
 import com.ikpb.exception.ReimbursementFormException;
 import com.ikpb.service.UserService;
 import com.ikpb.service.impl.UserServiceImpl;
@@ -50,6 +51,7 @@ public class UserServlet extends HttpServlet {
 		System.out.println(user);
 		User newUser = new GsonBuilder().create().fromJson(user, User.class);
 		System.out.println(newUser);
+		
 		try {
 			userService.createUser(newUser);
 			response.getWriter().write(newUser.getFirstName() + "Was successfully added");

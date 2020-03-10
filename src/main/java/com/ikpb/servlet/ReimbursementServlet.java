@@ -32,6 +32,7 @@ public class ReimbursementServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		List<ReimbursementForm> usersFormLists = reimburseService.getAllUsersForms();
 		String formListJSON = new GsonBuilder().create().toJson(usersFormLists);
 		
@@ -49,10 +50,8 @@ public class ReimbursementServlet extends HttpServlet {
 		System.out.println(myForm);
 		try {
 			reimburseService.createReimbursementForm(myForm);
-			response.getWriter().write(myForm.getUserid() + "Was successfully added");
 		} catch (ReimbursementFormException e) {
 			response.setStatus(response.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().write("Form could not be created");
 		}
 	}
 

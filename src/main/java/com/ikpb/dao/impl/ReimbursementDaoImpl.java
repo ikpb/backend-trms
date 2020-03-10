@@ -16,8 +16,8 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 	private static final String REIMBURSEMENT_TABLE = "reimburseform";
 	private static final String SELECT_ALL_REIMBURSEMENT_FORMS = "select * from " + REIMBURSEMENT_TABLE;
 	private static final String INSERT_REIMBURSEMENT_FORM = "insert into "+ REIMBURSEMENT_TABLE+ 
-	" (userid ,dateofevent,locationaddress,locationcity ,locationstate ,costs,gradeformat ,typeofevent ,workjustification ,submissiondate, description, enddate) "
-			+"values(?,?,?,?,?,?,?,?,?,?,?,?)";
+	" (userid ,dateofevent,locationaddress,locationcity ,locationstate ,costs,gradeformat ,typeofevent ,workjustification ,submissiondate, urgent,description, enddate, reimburseestimate) "
+			+"values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	
 	@Override
 	public void createReimbursementForm(ReimbursementForm form) throws ReimbursementFormException{
@@ -27,47 +27,32 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			//Putting in a native sql query utilizing a prepared statement
 			PreparedStatement ps = conn.prepareStatement(INSERT_REIMBURSEMENT_FORM);
 			ps.setString(1,form.getUserid());
-			//setting the first question mark to be the name that is passed as
-			//Parameter, that belongs to our user object
+	
 			ps.setTimestamp(2, form.getDateOfEvent());
-			//setting the second question mark to be the type that belongs
-			//to our user object
+
 			ps.setString(3,form.getAddress());
-			//setting the fourth question mark to be the type that belongs
-			//to our user object
+
 			ps.setString(4,form.getCity());
-			//setting the fourth question mark to be the type that belongs
-			//to our user object
+
 			ps.setString(5, form.getState());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
-			//to our user object
+
 			ps.setInt(6, form.getCost());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
-			//to our user object
+
 			ps.setString(7, form.getGradeFormat());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
-			//to our user object
+
 			ps.setString(8, form.getTypeOfEvent());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
-			//to our user object
+
 			ps.setString(9, form.getWorkJustification());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
-			//to our user object
+
 			ps.setDate(10, form.getSubmissionDate());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
-			//to our user object
-			ps.setString(11, form.getDescription());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
-			ps.setDate(12, form.getEndDate());
-			//setting the fifth question mark to be the type that belongs
-			//to our user object
+
+			ps.setBoolean(11, form.isUrgent());
+
+			ps.setString(12, form.getDescription());
+
+			ps.setDate(13, form.getEndDate());
+
+			ps.setDouble(14, form.getEstimateReimburse());
 
 			ps.execute();
 			//allows us to execute a query without a result
@@ -97,7 +82,9 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 		try{
 			Connection conn = ConnectionFactory.getConnection();
 			//putting in a native sql query utilizing a prepared statement
-			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,locationstate,cost,gradeformat,typeofevent,workjustification,description,enddate FROM reimburseform where formid = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
+					+ "locationstate,cost,gradeformat,typeofevent,workjustification,description,"
+					+ "submissiondate, enddate, reimburseestimate FROM reimburseform where formid = ?");
 			ps.setInt(1, formid);
 			ResultSet rs = ps.executeQuery();
 			//we are executing the query and storing the result set in 
@@ -105,7 +92,8 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			while(rs.next()) {
 				tempReimburseForm = new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
 						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("cost"),
-						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),rs.getDate("submissiondate"),rs.getString("description"),rs.getDate("enddate"));
+						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"));
 			}
 			
 			ps.execute();
@@ -135,20 +123,23 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 	}
 	}
 	@Override
-	public ReimbursementForm getFormUserId(int userid) {
+	public ReimbursementForm getFormUserId(String userId) {
 		ReimbursementForm tempReimburseForm=null;
 		try{
 			Connection conn = ConnectionFactory.getConnection();
 			//putting in a native sql query utilizing a prepared statement
-			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,locationstate,cost,gradeformat,typeofevent,workjustification,description,enddate FROM reimburseform where userid = ?");
-			ps.setInt(1, userid);
+			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
+					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
+					+ "submissiondate,enddate,reimburseestimate FROM reimburseform where userid = ?");
+			ps.setString(1, userId);
 			ResultSet rs = ps.executeQuery();
 			//we are executing the query and storing the result set in 
 			//a Resultset
 			while(rs.next()) {
 				tempReimburseForm = new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
-						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("cost"),
-						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),rs.getDate("submissiondate"),rs.getString("description"),rs.getDate("enddate"));
+						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
+						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"));
 			}
 			
 			ps.execute();
@@ -166,7 +157,9 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 		try{
 			Connection conn = ConnectionFactory.getConnection();
 			//putting in a native sql query utilizing a prepared statement
-			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,locationstate,costs,gradeformat,typeofevent,workjustification,submissiondate,description,enddate FROM reimburseform"
+			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
+					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
+					+ "submissiondate,enddate,reimburseestimate FROM reimburseform"
 					);
 			ResultSet rs = ps.executeQuery();
 			//we are executing the query and storing the result set in 
@@ -174,7 +167,8 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			while(rs.next()) {
 				tempReimburseForms.add(new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
 						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
-						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),rs.getDate("submissiondate"),rs.getString("description"),rs.getDate("enddate")));
+						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate")));
 			}
 			
 			ps.execute();

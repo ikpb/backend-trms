@@ -11,6 +11,6 @@ public interface ReimbursementService {
 	public void markFormApproved(int formid);
 	public ReimbursementForm getFormById(int formid);
 	public void deleteForm(int formid);
-	public ReimbursementForm getFormUserId(int id);
+	public ReimbursementForm getFormUserId(String userId);
 	public List<ReimbursementForm> getAllUsersForms();
 }

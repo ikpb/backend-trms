@@ -19,22 +19,21 @@ public class UserDaoImpl implements UserDAO {
 	private static final String SELECT_USER_BY_ID = "select * from " + USER_TABLE + " where id=?";
 	private static final String INSERT_INTO_USER = "insert into "+ USER_TABLE+ 
 			" (firstname ,lastname,email,password ,reportsto,title,reimburseamountleft,usertype) "
-					+"values(?,?,?,?,?,?,?,?,?)";
+					+"values(?,?,?,?,?,?,?,?)";
 	private static final String SELECT_USERS_SUPERVIOR_BY_ID = "select * from " + USER_TABLE + " where title=?";
 	@Override
 	public void createUser(User user) {
 		try {
 			Connection conn = ConnectionFactory.getConnection();
 			PreparedStatement ps = conn.prepareStatement(INSERT_INTO_USER);
-			ps.setInt(1,user.getId());
-			ps.setString(2,user.getFirstName());
-			ps.setString(3,user.getLastName());
-			ps.setString(4,user.getEmail());
-			ps.setString(5,user.getPassword());
-			ps.setInt(6,user.getReportsTo());
-			ps.setInt(7,user.getTitle());
-			ps.setInt(8,user.getRemainingAmount());
-			ps.setString(9,user.getUserType().toString());
+			ps.setString(1,user.getFirstName());
+			ps.setString(2,user.getLastName());
+			ps.setString(3,user.getEmail());
+			ps.setString(4,user.getPassword());
+			ps.setInt(5,user.getReportsTo());
+			ps.setInt(6,user.getTitle());
+			ps.setInt(7,user.getRemainingAmount());
+			ps.setString(8,user.getUserType().toString());
 			ps.execute();
 			conn.close();
 			
@@ -129,7 +128,7 @@ public class UserDaoImpl implements UserDAO {
 			//a Resultset
 			while(rs.next()) {
 				tempUsers.add(new User(rs.getInt("id"), rs.getString("firstname"),rs.getString("lastname"),
-						rs.getString("email"),rs.getString("password"), User.UserType.valueOf(rs.getString("usertype"))));
+						rs.getString("email"), rs.getInt("reportsto"),rs.getInt("title"),rs.getInt("reimburseamountleft"),User.UserType.valueOf(rs.getString("usertype"))));
 			}
 			ps.execute();
 			//allows us to execute a query without a result
