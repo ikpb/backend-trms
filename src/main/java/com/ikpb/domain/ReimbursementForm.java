@@ -265,7 +265,7 @@ public class ReimbursementForm {
 	}
 
 	public ReimbursementForm(int id, String userid, Timestamp dateOfEvent, String address, String city,String state,
-			int cost, String gradeFormat, String typeOfEvent, String workJustification, String description, Date endDate, Date submitdate, Double esti) {
+			int cost, String gradeFormat, String typeOfEvent, String workJustification, String description,  Date submitdate,Date endDate, Double esti) {
 		super();
 		this.id = id;
 		this.userid = userid;

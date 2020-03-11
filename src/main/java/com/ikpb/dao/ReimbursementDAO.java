@@ -12,6 +12,7 @@ public interface ReimbursementDAO {
 	public ReimbursementForm getFormById(int formid);
 	public void deleteForm(int formid);
 	public ReimbursementForm getFormUserId(String userId);
+	public List<ReimbursementForm> getAllFormsUserId(String userId);
 	public List<ReimbursementForm> getAllUserForms();
 	
 

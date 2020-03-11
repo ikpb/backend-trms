@@ -15,7 +15,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ReimbursementServlet</servlet-name>
-    <url-pattern>/reimbursements</url-pattern>
+    <url-pattern>/Reimbursements</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -55,6 +55,16 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ReimbursementIndServlet</servlet-name>
-    <url-pattern>/Reimbursement/1</url-pattern>
+    <url-pattern>/Reimbursement/id</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>IndividualReimbursementServlet</display-name>
+    <servlet-name>IndividualReimbursementServlet</servlet-name>
+    <servlet-class>com.ikpb.servlet.IndividualReimbursementServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>IndividualReimbursementServlet</servlet-name>
+    <url-pattern>/Reimbursement</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -51,18 +51,14 @@ public class ReimbursementIndServlet extends HttpServlet {
 		System.out.println(firstName);
 		String userId= authSplit[3].toString();
 		System.out.println(userId);
-		HttpSession sess = request.getSession();
-		System.out.println(sess.getId());
-		if(sess.getId().toString().compareTo((sessId))==0) {
-			System.out.println("session validated");
-		ReimbursementForm usersForm = reimburseService.getFormUserId(userId);
-		String formListJSON = new GsonBuilder().create().toJson(usersForm);
+		int formid = Integer.parseInt(request.getParameter("id"));
+		System.out.println(formid);
+		ReimbursementForm indiviualForm = reimburseService.getFormById(formid);
+		String formListJSON = new GsonBuilder().create().toJson(indiviualForm);
+		
 		PrintWriter pw = response.getWriter();
 		pw.write(formListJSON);
-		}else {
-			PrintWriter pw = response.getWriter();
-			pw.write("Not validated");
-		}
+	
 		
 		
 	}

@@ -11,6 +11,7 @@ public interface UserDAO {
 	public void deleteUser(int userid);
 	public User getUserById(int userid);
 	public User getUserByEmail(String email);
+	public User getUserAuthByEmail(String email);
 	public int	getSupervisorIdByTitle(int title);
 	public List<User> getAllUsers();
 }

@@ -11,10 +11,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	
 	@Override
 	public User validateUser(String email, String password) {
-		User user = userDao.getUserByEmail(email);
+		User user = userDao.getUserAuthByEmail(email);
+
 		if (user != null && user.getPassword().equals(password)) {
+			
 			return user;
 		}
+	
 		return null;
 	}
 

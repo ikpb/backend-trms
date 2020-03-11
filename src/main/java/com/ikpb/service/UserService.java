@@ -10,6 +10,7 @@ public interface UserService {
 	public void deleteUser(int userid);
 	public User getUserById(int userid);
 	public User getUserByEmail(String email);
+	public User getUserAuthByEmail(String email);
 	public List<User> getAllUsers();
 
 }

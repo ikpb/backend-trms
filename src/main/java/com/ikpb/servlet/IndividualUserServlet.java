@@ -8,8 +8,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.GsonBuilder;
+import com.ikpb.domain.ReimbursementForm;
 import com.ikpb.domain.User;
 import com.ikpb.service.UserService;
 import com.ikpb.service.impl.UserServiceImpl;
@@ -30,13 +32,43 @@ public class IndividualUserServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("deprecation")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		
-//		User user = userService.getUserById(userid);
-//		String userListJSON = new GsonBuilder().create().toJson(usersList);
-//		userListJSON = userListJSON.replace("/[\u0000-\u0019]+/g",""); 
-//		PrintWriter pw = response.getWriter();
-//		pw.write(userListJSON);
+//				request.getSession();
+		String header = request.getHeader("Authorization");
+		if (header ==null || !header.startsWith("Bearer ")) {
+			String userError = new GsonBuilder().create().toJson("User Not Authorized");
+			response.setStatus(response.SC_UNAUTHORIZED);
+			PrintWriter pw = response.getWriter();
+			pw.write(userError);
+		}
+		System.out.println("getting the tokens");
+		String authToken = header.toString();
+		String [] authSplit = authToken.split(" ");	
+		String sessId =authSplit[1].toString();
+		System.out.println("getting user sessionid");
+		System.out.println(sessId);
+		String firstName=authSplit[2].toString();
+		System.out.println("getting firstname");
+		System.out.println(firstName);
+		String userId= authSplit[3].toString();
+		System.out.println("getting email");
+		System.out.println(userId);
+		String userType= authSplit[4].toString();
+		System.out.println("getting userType");
+		System.out.println(userType);
+		if(firstName!=null) {
+			System.out.println("session validated individual");
+		User user= userService.getUserByEmail(userId);
+		System.out.println(user);
+		String formListJSON = new GsonBuilder().create().toJson(user);
+		PrintWriter pw = response.getWriter();
+		pw.write(formListJSON);
+		}else {
+			PrintWriter pw = response.getWriter();
+			pw.write("Not validated");
+		}
 	}
 
 	/**

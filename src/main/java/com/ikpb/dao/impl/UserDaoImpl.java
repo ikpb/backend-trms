@@ -79,7 +79,7 @@ public class UserDaoImpl implements UserDAO {
 			//a Resultset
 			if(rs.next()) {
 				tempUser= new User(rs.getInt("id"), rs.getString("firstname"),rs.getString("lastname"),
-						rs.getString("email"),rs.getString("password"), User.UserType.valueOf(rs.getString("userType")) );
+						rs.getString("email"), rs.getInt("reportsto"),rs.getInt("title"),rs.getInt("reimburseamountleft"),User.UserType.valueOf(rs.getString("userType")) );
 			}
 			
 			ps.execute();
@@ -104,7 +104,30 @@ public class UserDaoImpl implements UserDAO {
 			//a Resultset
 			if(rs.next()) {
 				tempUser= new User(rs.getInt("id"), rs.getString("firstname"),rs.getString("lastname"),
-						rs.getString("email"),rs.getString("password"), User.UserType.valueOf(rs.getString("userType")) );
+						rs.getString("email"),rs.getInt("reportsto"),rs.getInt("title"),rs.getInt("reimburseamountleft"),User.UserType.valueOf(rs.getString("userType")) );
+			}
+			
+			ps.execute();
+			//allows us to execute a query without a result
+			conn.close();
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}return tempUser;
+	}
+	public User getUserAuthByEmail(String email) {
+		User tempUser=null;
+		try{
+			Connection conn = ConnectionFactory.getConnection();
+			//putting in a native sql query utilizing a prepared statement
+			PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_EMAIL);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			//we are executing the query and storing the result set in 
+			//a Resultset
+			if(rs.next()) {
+				tempUser= new User(rs.getInt("id"), rs.getString("firstname"),rs.getString("lastname"),
+						rs.getString("email"), rs.getString("password"),User.UserType.valueOf(rs.getString("userType")) );
 			}
 			
 			ps.execute();

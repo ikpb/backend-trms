@@ -53,9 +53,11 @@ public class LoginServlet extends HttpServlet {
 			}
 			HttpSession sess = request.getSession(true);
 			response.setStatus(200);
+			String sessId = sess.getId();
+			sess.setAttribute("sessId", sessId);
 			String userSent = new GsonBuilder().create().toJson("id:"+user.getId()+" firstName:" + user.getFirstName() + " lastName:" +user.getLastName()+ " email:"+user.getEmail()+ " userType:"+user.getUserType() + " sessionid:"+sess.getId());
 			PrintWriter pw = response.getWriter();
-			pw.write(userSent);
+			pw.write(userSent);;
 		}
 	}
 

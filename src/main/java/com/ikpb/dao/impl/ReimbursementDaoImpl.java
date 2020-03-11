@@ -83,7 +83,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			Connection conn = ConnectionFactory.getConnection();
 			//putting in a native sql query utilizing a prepared statement
 			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
-					+ "locationstate,cost,gradeformat,typeofevent,workjustification,description,"
+					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
 					+ "submissiondate, enddate, reimburseestimate FROM reimburseform where formid = ?");
 			ps.setInt(1, formid);
 			ResultSet rs = ps.executeQuery();
@@ -91,7 +91,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			//a Resultset
 			while(rs.next()) {
 				tempReimburseForm = new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
-						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("cost"),
+						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
 						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
 						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"));
 			}
@@ -179,6 +179,35 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			e.printStackTrace();
 		}return tempReimburseForms;
 		
+	}
+
+	@Override
+	public List<ReimbursementForm> getAllFormsUserId(String userId) {
+		List <ReimbursementForm> tempReimburseForms = new ArrayList<ReimbursementForm>();
+		try{
+			Connection conn = ConnectionFactory.getConnection();
+			//putting in a native sql query utilizing a prepared statement
+			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
+					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
+					+ "submissiondate,enddate,reimburseestimate FROM reimburseform where userid = ?");
+			ps.setString(1, userId);
+			ResultSet rs = ps.executeQuery();
+			//we are executing the query and storing the result set in 
+			//a Resultset
+			while(rs.next()) {
+				tempReimburseForms.add(new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
+						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
+						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate")));
+			}
+			
+			ps.execute();
+			//allows us to execute a query without a result
+			conn.close();
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}return tempReimburseForms;
 	}
 
 }

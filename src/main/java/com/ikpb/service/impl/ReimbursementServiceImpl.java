@@ -88,4 +88,10 @@ public class ReimbursementServiceImpl implements ReimbursementService {
 		return reimburseDao.getAllUserForms();
 	}
 
+	@Override
+	public List<ReimbursementForm> getAllFormsUserId(String userId) {
+
+		return reimburseDao.getAllFormsUserId(userId);
+	}
+
 }
