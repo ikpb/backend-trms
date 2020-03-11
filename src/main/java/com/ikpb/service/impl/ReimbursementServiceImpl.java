@@ -94,4 +94,10 @@ public class ReimbursementServiceImpl implements ReimbursementService {
 		return reimburseDao.getAllFormsUserId(userId);
 	}
 
+	@Override
+	public List<ReimbursementForm> getAllFormsByTitle(int title) {
+		int subtitles = title-4;
+		return reimburseDao.getAllFormsByTitle(subtitles);
+	}
+
 }

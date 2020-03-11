@@ -67,4 +67,14 @@
     <servlet-name>IndividualReimbursementServlet</servlet-name>
     <url-pattern>/Reimbursement</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ReimbursementByTitleServlet</display-name>
+    <servlet-name>ReimbursementByTitleServlet</servlet-name>
+    <servlet-class>com.ikpb.servlet.ReimbursementByTitleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReimbursementByTitleServlet</servlet-name>
+    <url-pattern>/Reimbursement/title</url-pattern>
+  </servlet-mapping>
 </web-app>

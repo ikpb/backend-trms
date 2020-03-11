@@ -265,7 +265,7 @@ public class ReimbursementForm {
 	}
 
 	public ReimbursementForm(int id, String userid, Timestamp dateOfEvent, String address, String city,String state,
-			int cost, String gradeFormat, String typeOfEvent, String workJustification, String description,  Date submitdate,Date endDate, Double esti) {
+			int cost, String gradeFormat, String typeOfEvent, String workJustification, String description,  Date submitdate,Date endDate, Double esti, boolean bool) {
 		super();
 		this.id = id;
 		this.userid = userid;
@@ -282,6 +282,7 @@ public class ReimbursementForm {
 		this.estimateReimburse = esti;
 		this.description = description;
 		this.endDate = endDate;
+		this.isUrgent=bool;
 	}
 	
 }

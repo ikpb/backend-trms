@@ -18,7 +18,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 	private static final String INSERT_REIMBURSEMENT_FORM = "insert into "+ REIMBURSEMENT_TABLE+ 
 	" (userid ,dateofevent,locationaddress,locationcity ,locationstate ,costs,gradeformat ,typeofevent ,workjustification ,submissiondate, urgent,description, enddate, reimburseestimate) "
 			+"values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	
+	private static final String SELECT_ALL_REIMBURSEMENT_BY_TITLE = "select  * from getMyEmployeesForms(?)";
 	@Override
 	public void createReimbursementForm(ReimbursementForm form) throws ReimbursementFormException{
 		
@@ -93,7 +93,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 				tempReimburseForm = new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
 						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
 						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
-						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"));
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"),rs.getBoolean("urgent"));
 			}
 			
 			ps.execute();
@@ -139,7 +139,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 				tempReimburseForm = new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
 						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
 						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
-						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"));
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"),rs.getBoolean("urgent"));
 			}
 			
 			ps.execute();
@@ -168,7 +168,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 				tempReimburseForms.add(new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
 						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
 						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
-						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate")));
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"),rs.getBoolean("urgent")));
 			}
 			
 			ps.execute();
@@ -198,7 +198,34 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 				tempReimburseForms.add(new ReimbursementForm(rs.getInt("formid"), rs.getString("userid"),rs.getTimestamp("dateofevent"),
 						rs.getString("locationaddress"),rs.getString("locationcity"),rs.getString("locationstate"),rs.getInt("costs"),
 						rs.getString("gradeformat"),rs.getString("typeofevent"),rs.getString("workjustification"),
-						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate")));
+						rs.getString("description"),rs.getDate("submissiondate"),rs.getDate("enddate"),rs.getDouble("reimburseestimate"),rs.getBoolean("urgent")));
+			}
+			
+			ps.execute();
+			//allows us to execute a query without a result
+			conn.close();
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}return tempReimburseForms;
+	}
+
+	@Override
+	public List<ReimbursementForm> getAllFormsByTitle(int title) {
+		List <ReimbursementForm> tempReimburseForms = new ArrayList<ReimbursementForm>();
+		try{
+			Connection conn = ConnectionFactory.getConnection();
+			//putting in a native sql query utilizing a prepared statement
+			PreparedStatement ps = conn.prepareStatement(SELECT_ALL_REIMBURSEMENT_BY_TITLE);
+			ps.setInt(1, title);
+			ResultSet rs = ps.executeQuery();
+			//we are executing the query and storing the result set in 
+			//a Resultset
+			while(rs.next()) {
+				tempReimburseForms.add(new ReimbursementForm(rs.getInt("r_formid"), rs.getString("r_userid"),rs.getTimestamp("r_dateofevent"),
+						rs.getString("r_locationaddress"),rs.getString("r_locationcity"),rs.getString("r_locationstate"),rs.getInt("r_costs"),
+						rs.getString("r_gradeformat"),rs.getString("r_typeofevent"),rs.getString("r_workjustification"),
+						rs.getString("r_description"),rs.getDate("r_submissiondate"),rs.getDate("r_enddate"),rs.getDouble("r_reimburseestimate"),rs.getBoolean("r_urgent")));
 			}
 			
 			ps.execute();

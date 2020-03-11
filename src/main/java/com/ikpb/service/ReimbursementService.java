@@ -13,5 +13,6 @@ public interface ReimbursementService {
 	public void deleteForm(int formid);
 	public ReimbursementForm getFormUserId(String userId);
 	public List<ReimbursementForm> getAllFormsUserId(String userId);
+	public List<ReimbursementForm> getAllFormsByTitle(int title);
 	public List<ReimbursementForm> getAllUsersForms();
 }
