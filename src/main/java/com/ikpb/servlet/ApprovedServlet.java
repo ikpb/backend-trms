@@ -10,17 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.GsonBuilder;
+import com.ikpb.domain.ApprovedForm;
 import com.ikpb.domain.ReimbursementForm;
+import com.ikpb.service.ApproveRejectService;
 import com.ikpb.service.ReimbursementService;
+import com.ikpb.service.impl.ApproveRejectServiceImpl;
 import com.ikpb.service.impl.ReimbursementServiceImpl;
 
 /**
- * Servlet implementation class IndividualReimbursementServlet
+ * Servlet implementation class ApprovedServlet
  */
-public class IndividualReimbursementServlet extends HttpServlet {
-    private ReimbursementService reimburseService = new ReimbursementServiceImpl();
-// /Reimbursement
-    public IndividualReimbursementServlet() {
+public class ApprovedServlet extends HttpServlet {
+	ApproveRejectService approveService = new ApproveRejectServiceImpl();
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ApprovedServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,10 +35,8 @@ public class IndividualReimbursementServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String userid = request.getParameter("userid");
-		System.out.println(userid);
-		List<ReimbursementForm> usersFormLists = reimburseService.getAllFormsUserId(userid);
+		List<ApprovedForm> usersFormLists = approveService.getAllApporvedForms(userid);
 		String formListJSON = new GsonBuilder().create().toJson(usersFormLists);
 		
 		PrintWriter pw = response.getWriter();

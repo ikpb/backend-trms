@@ -100,4 +100,10 @@ public class ReimbursementServiceImpl implements ReimbursementService {
 		return reimburseDao.getAllFormsByTitle(subtitles);
 	}
 
+	@Override
+	public ReimbursementForm getFormForAdmin(int title, int formid) {
+		int subtitles = title-4;
+		return reimburseDao.getFormForAdmin(subtitles, formid);
+	}
+
 }

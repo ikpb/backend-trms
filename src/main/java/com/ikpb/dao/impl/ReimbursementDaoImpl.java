@@ -19,6 +19,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 	" (userid ,dateofevent,locationaddress,locationcity ,locationstate ,costs,gradeformat ,typeofevent ,workjustification ,submissiondate, urgent,description, enddate, reimburseestimate) "
 			+"values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String SELECT_ALL_REIMBURSEMENT_BY_TITLE = "select  * from getMyEmployeesForms(?)";
+	private static final String SELECT_SINGLE_REIMBURSEMENT_FOR_ADMIN = "select * from getMyEmployeeForm(?,?);";
 	@Override
 	public void createReimbursementForm(ReimbursementForm form) throws ReimbursementFormException{
 		
@@ -84,7 +85,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			//putting in a native sql query utilizing a prepared statement
 			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
 					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
-					+ "submissiondate, enddate, reimburseestimate FROM reimburseform where formid = ?");
+					+ "submissiondate, enddate, reimburseestimate,urgent FROM reimburseform where formid = ?");
 			ps.setInt(1, formid);
 			ResultSet rs = ps.executeQuery();
 			//we are executing the query and storing the result set in 
@@ -130,7 +131,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			//putting in a native sql query utilizing a prepared statement
 			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
 					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
-					+ "submissiondate,enddate,reimburseestimate FROM reimburseform where userid = ?");
+					+ "submissiondate,enddate,reimburseestimate,urgent FROM reimburseform where userid = ?");
 			ps.setString(1, userId);
 			ResultSet rs = ps.executeQuery();
 			//we are executing the query and storing the result set in 
@@ -159,7 +160,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			//putting in a native sql query utilizing a prepared statement
 			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
 					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
-					+ "submissiondate,enddate,reimburseestimate FROM reimburseform"
+					+ "submissiondate,enddate,reimburseestimate,urgent FROM reimburseform"
 					);
 			ResultSet rs = ps.executeQuery();
 			//we are executing the query and storing the result set in 
@@ -189,7 +190,7 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			//putting in a native sql query utilizing a prepared statement
 			PreparedStatement ps = conn.prepareStatement("SELECT formid,userid,dateofevent,locationaddress,locationcity,"
 					+ "locationstate,costs,gradeformat,typeofevent,workjustification,description,"
-					+ "submissiondate,enddate,reimburseestimate FROM reimburseform where userid = ?");
+					+ "submissiondate,enddate,reimburseestimate,urgent FROM reimburseform where userid = ?");
 			ps.setString(1, userId);
 			ResultSet rs = ps.executeQuery();
 			//we are executing the query and storing the result set in 
@@ -235,6 +236,34 @@ public class ReimbursementDaoImpl implements ReimbursementDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}return tempReimburseForms;
+	}
+
+	@Override
+	public ReimbursementForm getFormForAdmin(int title, int formid) {
+		ReimbursementForm tempReimburseForm=null;
+		try{
+			Connection conn = ConnectionFactory.getConnection();
+			//putting in a native sql query utilizing a prepared statement
+			PreparedStatement ps = conn.prepareStatement(SELECT_SINGLE_REIMBURSEMENT_FOR_ADMIN);
+			ps.setInt(1, title);
+			ps.setInt(2, formid);
+			ResultSet rs = ps.executeQuery();
+			//we are executing the query and storing the result set in 
+			//a Resultset
+			while(rs.next()) {
+				tempReimburseForm = new ReimbursementForm(rs.getInt("t_formid"), rs.getString("t_userid"),rs.getTimestamp("t_dateofevent"),
+						rs.getString("t_locationaddress"),rs.getString("t_locationcity"),rs.getString("t_locationstate"),rs.getInt("t_costs"),
+						rs.getString("t_gradeformat"),rs.getString("t_typeofevent"),rs.getString("t_workjustification"),
+						rs.getString("t_description"),rs.getDate("t_submissiondate"),rs.getDate("t_enddate"),rs.getDouble("t_reimburseestimate"),rs.getBoolean("t_urgent"));
+			}
+			
+			ps.execute();
+			//allows us to execute a query without a result
+			conn.close();
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}return tempReimburseForm;
 	}
 
 }

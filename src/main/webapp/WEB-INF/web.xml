@@ -77,4 +77,44 @@
     <servlet-name>ReimbursementByTitleServlet</servlet-name>
     <url-pattern>/Reimbursement/title</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ReimbursementByTitleAndId</display-name>
+    <servlet-name>ReimbursementByTitleAndId</servlet-name>
+    <servlet-class>com.ikpb.servlet.ReimbursementByTitleAndId</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReimbursementByTitleAndId</servlet-name>
+    <url-pattern>/Reimbursement/title/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ApproveRejectServlet</display-name>
+    <servlet-name>ApproveRejectServlet</servlet-name>
+    <servlet-class>com.ikpb.servlet.ApproveRejectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApproveRejectServlet</servlet-name>
+    <url-pattern>/Approve-Reject</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ApproveRejectIndServlet</display-name>
+    <servlet-name>ApproveRejectIndServlet</servlet-name>
+    <servlet-class>com.ikpb.servlet.ApproveRejectIndServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApproveRejectIndServlet</servlet-name>
+    <url-pattern>/Approve-Reject/Id</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ApprovedServlet</display-name>
+    <servlet-name>ApprovedServlet</servlet-name>
+    <servlet-class>com.ikpb.servlet.ApprovedServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApprovedServlet</servlet-name>
+    <url-pattern>/Approved</url-pattern>
+  </servlet-mapping>
 </web-app>

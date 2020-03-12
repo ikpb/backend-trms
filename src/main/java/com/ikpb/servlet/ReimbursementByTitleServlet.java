@@ -20,17 +20,10 @@ import com.ikpb.service.impl.ReimbursementServiceImpl;
 public class ReimbursementByTitleServlet extends HttpServlet {
 	  private ReimbursementService reimburseService = new ReimbursementServiceImpl();
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public ReimbursementByTitleServlet() {
         super();
-        // TODO Auto-generated constructor stub
+      
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int title = Integer.parseInt(request.getParameter("title"));
 		System.out.println(title);
@@ -40,13 +33,4 @@ public class ReimbursementByTitleServlet extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		pw.write(formListJSON);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
 }
